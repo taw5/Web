@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Currency Converter</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <label for="amount">Amount:</label>
+  <input min="0" type="number" onKeyDown="amountOnKeyDown()" id="amount">
+
+  <label for="source">Type Currency:</label>
+  <select id="source"></select>
+
+  <label for="target">Currency Converting to:</label>
+  <select id="target"></select>
+
+  <button id="convert">Convert</button>
+
+  <div id="result"></div>
+  <h3>History</h3>
+<table id = "table">
+  
+<tr>
+  <th>Date</th>
+  <th>Amount</th>
+  <th>From</th>
+  <th>To</th>
+  <th>Result</th>
+</tr>
+
+</table>
+
+  <script src="convert.js"></script>
+</body>
+
+</html>
