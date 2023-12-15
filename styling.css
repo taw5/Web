@@ -1,26 +1,43 @@
 body {
-      background-color: rgb(168, 192, 168);
-      margin: 0; /* Reset default margin */
-      padding: 0; /* Reset default padding */
-    }
-    .navigation {
-      background-color: #fff; /* Set background color for the navigation bar */
-      padding: 15px; /* Add padding to the navigation bar */
-    }
-    ul {
-      list-style-type: none; /* Remove bullet points from the list */
-      padding: 0; /* Remove default padding from the list */
-      margin: 0; /* Remove default margin from the list */
-    }
-    ul li {
-      display: inline; /* Display list items horizontally */
-      margin-right: 15px; /* Add spacing between list items */
-    }
-    ul li a {
-      text-decoration: none; /* Remove underline from links */
-      color: rgb(203, 33, 33); /* Set link color */
-    }
-    ul li a:hover {
-      color: #000; /* Change link color on hover */
-    }
- 
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation {
+  background-color: #fff;
+  padding: 15px;
+  text-align: center;
+}
+
+.navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation ul li {
+  display: inline;
+  margin-right: 15px;
+}
+
+.section {
+  padding: 50px;
+  margin-bottom: 20px;
+}
+
+#index {
+  background-color: #f2f2f2;
+}
+
+#Login.html {
+  background-color: #eaeaea;
+}
+
+#SignUp.html {
+  background-color: #dcdcdc;
+}
+
+#ContactMe.html {
+  background-color: #cccccc;
+}
