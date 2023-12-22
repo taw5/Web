@@ -39,15 +39,18 @@ document.addEventListener('DOMContentLoaded', function () {
     emptyTile.innerText = tempText;
   }
 
+  
   function isPuzzleSolved() {
-    for (let i = 0; i < tiles.length - 1; i++) {
-      if (parseInt(tiles[i].innerText) !== i + 1) {
+    for (let i = 0; i < tiles.length - 1; i++) { // loops through all tiles (tiles.length-1 because of the empty tile, so realistically it's 15 repitions )
+      const tileValue = parseInt(tiles[i].innerText);
+      // fixed bug here it didnt calculate the puzzle beign solved correctly
+      if (tileValue !== i + 1 && tileValue !== 0) {
         return false;
-      }
+      } // shortcircuit
     }
+    
     return true;
   }
-
   function shuffleTiles() {
     const tileArray = Array.from(tiles);
 
