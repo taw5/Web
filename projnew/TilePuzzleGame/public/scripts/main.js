@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 winscreen.style.visibility = "visible";
                 document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s";
                 hasGameEnded = true;
-                alert("You Won!")
+
             }
         }
 
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 winscreen.style.visibility = "visible";
                 document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s";
                 hasGameEnded = true;
-                alert("You Won!")
+
             }
         }
     } // Moves the tiles logic where it checks if it's not possible to move or not. It uses the empty class to confirm if what we're pressing isn't an empty as well.
