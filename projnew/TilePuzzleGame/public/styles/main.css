@@ -1,11 +1,11 @@
 @font-face {
     font-family: Bungee;
-    src: url('./fonts/Bungee_basic/Bungee-Regular.ttf') format('truetype');
+    src: url('projnew/TilePuzzleGame/public/styles/fonts/Bungee_Basic/Bungee-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: Bungee_Outline;
-    src: url('./fonts/Bungee_Basic/BungeeOutline-Regular.ttf') format('truetype');
+    src: url('./fonts/Bungee_BasicBungeeOutline-Regular.ttf') format('truetype');
 }
 
 *{
