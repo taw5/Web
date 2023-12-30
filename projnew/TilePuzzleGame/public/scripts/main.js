@@ -114,7 +114,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var col = parseInt(id[2]);
         if (isAdjacentToAnEmptyTile(row, col)) {
             console.log('Move tile');
+            
             swapTiles(this);
+            if(hasWon()){
+                alert("You Won!")
+                hasGameEnded = true;
+            }
         }
     } // Moves the tiles logic where it checks if it's not possible to move or not. It uses the empty class to confirm if what we're pressing isn't an empty as well.
 
