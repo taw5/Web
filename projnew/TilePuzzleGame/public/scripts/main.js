@@ -1,7 +1,7 @@
 // on load
 document.addEventListener('DOMContentLoaded', function () {
     console.log('main.js loaded');
-    var hasGameStarted = false;
+    var hasGameStarted = true;
     var isGamePaused = false;
     var hasGameEnded = false;
     var gameBoardSize = 2; // 2x2 it should be a square matrix where n >= 2
