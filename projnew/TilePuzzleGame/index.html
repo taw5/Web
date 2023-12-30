@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tile Puzzle Game</title>
+    <link rel="stylesheet" href="public/styles/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h4>Tile Puzzle Game</h4>
+            </div>
+            <ul id="games">
+                <li><a href="#">2x2</a></li>
+                <li><a href="#">3x3</a></li>
+                <li><a href="#">4x4</a></li>
+                <li><a href="#">5x5</a></li>
+                <li><a href="#">Custom</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>Created by: <a href="/projects.html"> Me</a></p>
+            </div>
+        </div>
+        <div class="main-content">
+            <div id="on_start">
+                <h1>Tile Puzzle Game</h1>
+                <p>Click on the tiles to move them around and put them in order.</p>
+            </div>
+
+            <div id="game-screen">
+                <div class="header">
+                    <div class="header-left">
+                        <h4>Tile Puzzle Game</h4>
+                    </div>
+                    <div class="header-right">
+                        <button id="shuffle">Reset</button>
+                        <button id="timer">Time: 0s</button>
+                    </div>
+                </div>
+                <div id="tiles">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="public/scripts/main.js"></script>
+</body>
+
+</html>
