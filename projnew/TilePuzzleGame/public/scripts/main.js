@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let currentEmptyTilePosition = currentEmptyTile.id.split('-');
         let currentEmptyTileRow = parseInt(currentEmptyTilePosition[1]);
         let currentEmptyTileCol = parseInt(currentEmptyTilePosition[2]);
-        MOVES = { "UP": [1,0], "DOWN": [-1,0], "LEFT": [0,-1], "RIGHT": [0,1]} 
+        MOVES = { "UP": [1,0], "DOWN": [-1,0], "LEFT": [0,1], "RIGHT": [0,-1]} 
         move = MOVES[movement.toUpperCase()];
         console.log(move);
         console.log(isLegalMove(currentEmptyTileRow+move[0], currentEmptyTileCol+move[1]));
