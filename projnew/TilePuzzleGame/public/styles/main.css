@@ -1,6 +1,6 @@
 @font-face {
     font-family: Bungee;
-    src: url('projnew/TilePuzzleGame/public/styles/fonts/Bungee_Basic/Bungee-Regular.ttf') format('truetype');
+    src: url('./fonts/Bungee_Basic/Bungee-Regular.ttf') format('truetype');
 }
 
 @font-face {
