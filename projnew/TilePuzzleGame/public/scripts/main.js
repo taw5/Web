@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var time = 0;
     var moves = 0;
     var emptyTile = -1;
-    var moveAccess = document.getElementById("movecount");
+    var movesCount = document.getElementById("movecount");
     var emptyTilePosition = -1;
     gameBoard.classList.add('hidden');
     var winscreen = document.getElementById("win");
 
-    console.log(winscreen.style.visibility);
+    
 
     console.log('-------')
     setInterval(function () {
@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timer.innerText = "Time: " + time.toString() + "s";
         }
     }, 1000); // simply a time function that calculates the amount of seconds passed
+
 
 
     document.addEventListener('keydown', function (event) {
@@ -51,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Game not started');
             }
             if (hasWon()) {
+                winscreen.style.visibility = "visible";
+                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s";
+                hasGameEnded = true;
                 alert("You Won!")
             }
         }
@@ -72,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function onGameSelect(event) {
+        winscreen.style.visibility = "hidden";
+
         event.preventDefault();
         console.log('Game id: ' + this.innerText);
         gameBoardSize = parseInt(this.innerText.split('x')[0]);
@@ -82,6 +88,11 @@ document.addEventListener('DOMContentLoaded', function () {
     } // when selecting the type of board it creates the board and sets the visibility as on start as hidden, but the gameboard as not hidden.
 
     function createGameBoard(size) {
+        time = 0;
+        hasGameStarted = true;
+        moves = 0;
+        hasGameEnded = false;
+        movesCount.innerText = "Moves: "+moves;
         var board = [];
 
         for (var i = 0; i < (size * size) - 1; i++) {
@@ -123,63 +134,42 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Move tile');
 
             swapTiles(this);
+
             if (hasWon()) {
-                var winscreen = document.getElementById("win");
-                console.log(winscreen.style.visibility);
+                
+                winscreen.style.visibility = "visible";
+                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s";
                 hasGameEnded = true;
                 alert("You Won!")
             }
         }
     } // Moves the tiles logic where it checks if it's not possible to move or not. It uses the empty class to confirm if what we're pressing isn't an empty as well.
-
+    function isLegalMove(row, col) {
+        return row >= 0 && row < gameBoardSize && col >= 0 && col < gameBoardSize;
+    }
     function moveTile(movement) {
         console.log('Move tile');
-        let currentEmptyTile =
+        let currentEmptyTile = 
             document.getElementById(emptyTilePosition);
         console.log('Current empty tile: ' + currentEmptyTile.id);
         let currentEmptyTilePosition = currentEmptyTile.id.split('-');
         let currentEmptyTileRow = parseInt(currentEmptyTilePosition[1]);
         let currentEmptyTileCol = parseInt(currentEmptyTilePosition[2]);
-        if (movement === 'up') {
-            if (currentEmptyTileRow < gameBoardSize - 1) {
-                let tileToMove = document.getElementById('col-' + (currentEmptyTileRow + 1) + '-' + currentEmptyTileCol);
-                console.log('Tile to move: ' + tileToMove.id);
-                swapTiles(tileToMove);
-                moves++;
-            } else {
-                console.log('Cannot move up');
-            }
-        } else if (movement === 'down') {
-            if (currentEmptyTileRow > 0) {
-                let tileToMove = document.getElementById('col-' + (currentEmptyTileRow - 1) + '-' + currentEmptyTileCol);
-                console.log('Tile to move: ' + tileToMove.id);
-                swapTiles(tileToMove);
-                moves++;
-            } else {
-                console.log('Cannot move down');
-            }
-        } else if (movement === 'left') {
-            if (currentEmptyTileCol < gameBoardSize - 1) {
-                let tileToMove = document.getElementById('col-' + currentEmptyTileRow + '-' + (currentEmptyTileCol + 1));
-                console.log('Tile to move: ' + tileToMove.id);
-                swapTiles(tileToMove);
-                moves++;
-            } else {
-                console.log('Cannot move left');
-            }
-        } else if (movement === 'right') {
-            if (currentEmptyTileCol > 0) {
-                let tileToMove = document.getElementById('col-' + currentEmptyTileRow + '-' + (currentEmptyTileCol - 1));
-                console.log('Tile to move: ' + tileToMove.id);
-                swapTiles(tileToMove);
-                moves++;
-            } else {
-                console.log('Cannot move right');
-            }
-        }
-    } // actually moves the tile, here it's based on left,right,up,down arrow key presses, the movement variable is determined earlier on in the event listener. Each if statement calls the swapTiles() function to initiate the moving, otherwise it prints the direction it cannot move.
+        MOVES = { "UP": [1,0], "DOWN": [-1,0], "LEFT": [0,-1], "RIGHT": [0,1]} 
+        move = MOVES[movement.toUpperCase()];
+        console.log(move);
+        console.log(isLegalMove(currentEmptyTileRow+move[0], currentEmptyTileCol+move[1]));
+        if(!isLegalMove(currentEmptyTileRow+move[0], currentEmptyTileCol+move[1]))
+            return;
+        let tileToMove = document.getElementById('col-' + (currentEmptyTileRow + move[0]) + '-' + (currentEmptyTileCol+move[1]));
+        console.log('col-' + (currentEmptyTileRow + move[0]) + '-' + (currentEmptyTileCol+move[1]));
+        swapTiles(tileToMove);
+
+    }// actually logic the tile, here it's based on left,right,up,down arrow key presses, the movement variable is determined earlier on in the event listener. Each if statement calls the swapTiles() function to initiate the moving, otherwise it prints the direction it cannot move.
+   
 
     function swapTiles(tile) {
+        moves++;
         var emptyTile = document.getElementById(emptyTilePosition);
         var emptyTileText = emptyTile.innerText;
         var tileText = tile.innerText;
@@ -193,6 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Empty tile position: ' + emptyTilePosition);
         emptyTile.style.animation = 'wobble 0.5s ease-in-out';
         tile.style.animation = 'wobble 0.5s ease-in-out';
+        movesCount.innerText = "Moves: "+moves;
+    
     } // Gets the emptytile and uses it to move it and replace it with what's being moved, prints the empty tile position and saves the emptytileposition using tile.id that was used earlier.
 
     function isAdjacentToAnEmptyTile(row, col) {
@@ -201,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var emptyCol = parseInt(data[2]);
         return (row === emptyRow && (col === emptyCol + 1 || col === emptyCol - 1)) ||
             (col === emptyCol && (row === emptyRow + 1 || row === emptyRow - 1));
+            
     } // checks ifadjacenttoemptytile that's called in the move function.
 
 
