@@ -8,10 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var gameBoard = document.getElementById('game-screen');
     var timer = document.getElementById('timer');
     var time = 0;
+    var moves = 0;
     var emptyTile = -1;
+    var moveAccess = document.getElementById("movecount");
     var emptyTilePosition = -1;
     gameBoard.classList.add('hidden');
+    var winscreen = document.getElementById("win");
 
+    console.log(winscreen.style.visibility);
+
+    console.log('-------')
     setInterval(function () {
         if (hasGameStarted && !isGamePaused && !hasGameEnded) {
             console.log('Game loop');
@@ -55,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         createGameBoard(gameBoardSize);
         time = 0;
         console.log('time reset');
+        moves =0;
     }) // quick function made to allow for the functionality of shuffling the board. resets time as well.
 
     const games = document.querySelector('#games');
@@ -112,13 +119,15 @@ document.addEventListener('DOMContentLoaded', function () {
         var id = this.id.split('-');
         var row = parseInt(id[1]); // the id variable allows for usage such as this to determine positive of what's being moved.
         var col = parseInt(id[2]);
-        if (isAdjacentToAnEmptyTile(row, col)) {
+        if (isAdjacentToAnEmptyTile(row, col) && !isGamePaused) {
             console.log('Move tile');
-            
+
             swapTiles(this);
-            if(hasWon()){
-                alert("You Won!")
+            if (hasWon()) {
+                var winscreen = document.getElementById("win");
+                console.log(winscreen.style.visibility);
                 hasGameEnded = true;
+                alert("You Won!")
             }
         }
     } // Moves the tiles logic where it checks if it's not possible to move or not. It uses the empty class to confirm if what we're pressing isn't an empty as well.
@@ -136,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let tileToMove = document.getElementById('col-' + (currentEmptyTileRow + 1) + '-' + currentEmptyTileCol);
                 console.log('Tile to move: ' + tileToMove.id);
                 swapTiles(tileToMove);
+                moves++;
             } else {
                 console.log('Cannot move up');
             }
@@ -144,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let tileToMove = document.getElementById('col-' + (currentEmptyTileRow - 1) + '-' + currentEmptyTileCol);
                 console.log('Tile to move: ' + tileToMove.id);
                 swapTiles(tileToMove);
+                moves++;
             } else {
                 console.log('Cannot move down');
             }
@@ -152,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let tileToMove = document.getElementById('col-' + currentEmptyTileRow + '-' + (currentEmptyTileCol + 1));
                 console.log('Tile to move: ' + tileToMove.id);
                 swapTiles(tileToMove);
+                moves++;
             } else {
                 console.log('Cannot move left');
             }
@@ -160,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let tileToMove = document.getElementById('col-' + currentEmptyTileRow + '-' + (currentEmptyTileCol - 1));
                 console.log('Tile to move: ' + tileToMove.id);
                 swapTiles(tileToMove);
+                moves++;
             } else {
                 console.log('Cannot move right');
             }
@@ -217,8 +230,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return hasWon;
     } // checks if user has won using math logic, if the tile that we're scanning/analyzing has this expected value and is done so in every tile, the user is declared as a winner. hasWon is falce when one of the tiules it not equal to the expectedValue.
-
-
-
-
 });
