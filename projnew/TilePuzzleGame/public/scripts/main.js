@@ -9,12 +9,73 @@ document.addEventListener('DOMContentLoaded', function () {
     var timer = document.getElementById('timer');
     var time = 0;
     var moves = 0;
+    var score = 0;
+    var scores = [];
     var emptyTile = -1;
     var movesCount = document.getElementById("movecount");
     var emptyTilePosition = -1;
     gameBoard.classList.add('hidden');
     var winscreen = document.getElementById("win");
+    displayScores()
+    function addScoreToLocalStorage(score) {
+        let scores = JSON.parse(localStorage.getItem('scores')) || [];
+    
+        scores.push(score);
+        if(!hasGameEnded){ // had a bug where it registers scores if you simply spam arrow keys after winning
+        localStorage.setItem('scores', JSON.stringify(scores));}
+    }
+    
+    function checkHighScore(score) {
+      
+        let scores = JSON.parse(localStorage.getItem('scores')) || [];
 
+
+        if (scores.length > 0) {
+
+            let lowestScore = Math.min(...scores.map(score => score.totalScore)); // math.min syntax requires ..., scores.map looks through all totalscores and finds the lowest score
+    
+            if (score < lowestScore) {
+                        
+
+                console.log("HIGH SCORE!!!")
+                // display the high score message
+                document.getElementById('highScoreAlert').style.visibility = 'visible';
+                return true; 
+            }
+        } else {
+            console.log("HIGH SCORE!!!")
+            
+            document.getElementById('highScoreAlert').style.visibility = 'visible';
+            return true; //  new high score
+        }
+    
+        return false; 
+    }
+    
+    function displayScores() {
+        let scores = JSON.parse(localStorage.getItem('scores')) || [];
+        
+        let scoresTable = '<table id="scoresTable"><tr><th>Moves</th><th>Time</th><th>Total Score</th><th>Game Type</th></tr>';// table setting
+        
+        scores.forEach(function(score) {
+            scoresTable += '<tr><td>' + score.moves + '</td><td>' + score.time + 's</td><td>' + score.totalScore + '</td><td>' + score.Game_Type+"x"+score.Game_Type + '</td></tr>';
+        });
+        
+        scoresTable += '</table>';
+       
+    
+        // Display scores table in the 'scores' div (with id "scores")
+        document.getElementById('scores').innerHTML = scoresTable;
+    }
+    
+        // Listen for the "Scores" button click
+        let scoresButton = document.getElementById('scores');
+        scoresButton.addEventListener('click', function(event) {
+            console.log("pressed")
+            event.preventDefault();
+            displayScores();
+        });
+    
     
 
     console.log('-------')
@@ -26,6 +87,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, 1000); // simply a time function that calculates the amount of seconds passed
 
+    document.getElementById("tryAgain").addEventListener("click", function(){
+        winscreen.style.visibility = "hidden";
+        console.log("hi")
+        createGameBoard(gameBoardSize);
+
+
+
+
+
+    })
 
 
     document.addEventListener('keydown', function (event) {
@@ -53,9 +124,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             if (hasWon()) {
                 winscreen.style.visibility = "visible";
-                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s";
-                hasGameEnded = true;
+                score = moves+time;
+                if(checkHighScore(score))
+                {console.log("test");
 
+                document.getElementById('highScoreAlert').style.visibility = 'visible'}
+
+                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s"+ "\n Score: "+score.toString();
+                addScoreToLocalStorage({ moves: moves, time: time, totalScore: score, Game_Type: gameBoardSize });
+
+                hasGameEnded = true;
+                displayScores()
+                
             }
         }
 
@@ -75,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         aHref.addEventListener('click', onGameSelect);
     }
 
+
     function onGameSelect(event) {
         winscreen.style.visibility = "hidden";
 
@@ -88,6 +169,8 @@ document.addEventListener('DOMContentLoaded', function () {
     } // when selecting the type of board it creates the board and sets the visibility as on start as hidden, but the gameboard as not hidden.
 
     function createGameBoard(size) {
+        document.getElementById('highScoreAlert').style.visibility = 'hidden';
+
         time = 0;
         hasGameStarted = true;
         moves = 0;
@@ -111,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 col.classList.add('col');
                 col.addEventListener('click', move);
                 col.id = 'col-' + i + '-' + j;
+              
                 if (board[(i * size) + j] === emptyTile) {
                     col.classList.add('empty');
                     emptyTilePosition = col.id;
@@ -122,6 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             gameBoard.appendChild(row);
         }
+
     } // Creates gameboard, math.random logic, and is through row-major order where it goes through each element in the row then goes to the next row. This is how the board is created.
 
     function move(event) {
@@ -138,10 +223,17 @@ document.addEventListener('DOMContentLoaded', function () {
             if (hasWon()) {
                 
                 winscreen.style.visibility = "visible";
-                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s";
-                hasGameEnded = true;
-
+                score = moves+time;
+                if(checkHighScore(score))
+                {console.log("test")
+                    document.getElementById('highScoreAlert').style.visibility = 'visible'}
             }
+                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s"+ "\n Score: "+score.toString();                
+                hasGameEnded = true;
+                addScoreToLocalStorage({ moves: moves, time: time, totalScore: score, Game_Type: gameBoardSize });
+                displayScores()
+
+                
         }
     } // Moves the tiles logic where it checks if it's not possible to move or not. It uses the empty class to confirm if what we're pressing isn't an empty as well.
     function isLegalMove(row, col) {
