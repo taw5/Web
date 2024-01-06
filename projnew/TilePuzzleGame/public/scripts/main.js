@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if(!hasGameEnded){ // had a bug where it registers scores if you simply spam arrow keys after winning
         localStorage.setItem('scores', JSON.stringify(scores));}
     }
-    
+   
     function checkHighScore(score) {
       
         let scores = JSON.parse(localStorage.getItem('scores')) || [];
@@ -68,15 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('scores').innerHTML = scoresTable;
     }
     
-        // Listen for the "Scores" button click
-        let scoresButton = document.getElementById('scores');
-        scoresButton.addEventListener('click', function(event) {
-            console.log("pressed")
-            event.preventDefault();
-            displayScores();
-        });
-    
-    
+
 
     console.log('-------')
     setInterval(function () {
@@ -97,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     })
+
 
 
     document.addEventListener('keydown', function (event) {
@@ -142,7 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }); // listens to the user's space bar input, arrow key inputs, and click input.
     document.getElementById("shuffle").addEventListener("click", function () {
         console.log("shuffle pressed");
+
         createGameBoard(gameBoardSize);
+
         time = 0;
         console.log('time reset');
         moves =0;
@@ -170,11 +165,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function createGameBoard(size) {
         document.getElementById('highScoreAlert').style.visibility = 'hidden';
-
-        time = 0;
         hasGameStarted = true;
-        moves = 0;
+        isGamePaused = false;
         hasGameEnded = false;
+        time = 0;
+       
+        moves = 0;
+        
         movesCount.innerText = "Moves: "+moves;
         var board = [];
 
@@ -189,6 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (var i = 0; i < size; i++) {
             var row = document.createElement('div');
             row.classList.add('row');
+            
             for (var j = 0; j < size; j++) {
                 var col = document.createElement('div');
                 col.classList.add('col');
@@ -205,33 +203,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 row.appendChild(col);
             }
             gameBoard.appendChild(row);
+
+            
         }
 
-    } // Creates gameboard, math.random logic, and is through row-major order where it goes through each element in the row then goes to the next row. This is how the board is created.
+    } // Creates gameboard, math.razndom logic, and is through row-major order where it goes through each element in the row then goes to the next row. This is how the board is created.
 
     function move(event) {
-        if (this.classList.contains('empty'))
-            return;
+        
         var id = this.id.split('-');
         var row = parseInt(id[1]); // the id variable allows for usage such as this to determine positive of what's being moved.
         var col = parseInt(id[2]);
-        if (isAdjacentToAnEmptyTile(row, col) && !isGamePaused) {
+        if (this.classList.contains('empty'))
+            return;
+        if (isAdjacentToAnEmptyTile(row, col)) {
             console.log('Move tile');
 
             swapTiles(this);
 
             if (hasWon()) {
-                
                 winscreen.style.visibility = "visible";
                 score = moves+time;
-                if(checkHighScore(score))
-                {console.log("test")
-                    document.getElementById('highScoreAlert').style.visibility = 'visible'}
-            }
-                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s"+ "\n Score: "+score.toString();                
-                hasGameEnded = true;
+                document.getElementById("winScore").innerText = "Moves: "+moves.toString()+"   Time: "+time.toString()+"s"+ "\n Score: "+score.toString();
                 addScoreToLocalStorage({ moves: moves, time: time, totalScore: score, Game_Type: gameBoardSize });
-                displayScores()
+
+                hasGameEnded = true;
+                displayScores()   
+            }
 
                 
         }
